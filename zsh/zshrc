@@ -26,7 +26,7 @@ export VISUAL=nvim
 # Each fresh SSH login replaces SSH_AUTH_SOCK with a per-connection path.
 # Long-lived tmux/nvim processes resolve through a stable symlink instead.
 if [[ -S $SSH_AUTH_SOCK && $SSH_AUTH_SOCK != $HOME/.ssh/agent_sock ]]; then
-  ln -sfn $SSH_AUTH_SOCK $HOME/.ssh/agent_sock
+  mkdir -p -m 700 $HOME/.ssh && ln -sfn $SSH_AUTH_SOCK $HOME/.ssh/agent_sock
 fi
 [[ -L $HOME/.ssh/agent_sock ]] && export SSH_AUTH_SOCK=$HOME/.ssh/agent_sock
 # No reachable agent (no forwarding, no launchd): use the one ssh-unlock starts.

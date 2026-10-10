@@ -27,5 +27,5 @@ brew "docker-compose"
 
 # Apps + fonts
 cask "wezterm"
-cask "bitwarden"
+cask "bitwarden" unless File.exist?("/Applications/Bitwarden.app")  # may be the App Store build
 cask "font-fira-code-nerd-font"

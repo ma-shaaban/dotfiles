@@ -8,6 +8,9 @@ if ! have brew && [[ ! -x /opt/homebrew/bin/brew ]]; then
 fi
 eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || brew shellenv)"
 
+# Homebrew 7+ refuses formulae from third-party taps until trusted.
+brew trust --formula hashicorp/tap/terraform
+
 log "brew bundle"
 brew bundle --file "$DOTFILES/Brewfile"
 
