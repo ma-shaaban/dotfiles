@@ -1,5 +1,13 @@
--- Keymaps are automatically loaded on the VeryLazy event
--- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
--- Add any additional keymaps here
-vim.api.nvim_set_keymap("i", "jj", "<Esc>", { noremap = false })
-vim.api.nvim_set_keymap("i", "jk", "<Esc>", { noremap = false })
+-- <leader>cf  — copy the current filename to clipboard
+vim.keymap.set("n", "<leader>cf", function()
+  local f = vim.fn.expand("%:t")
+  vim.fn.setreg("+", f)
+  vim.notify("Copied filename: " .. f)
+end, { desc = "Copy Filename" })
+
+-- <leader>cp  — copy the current relative path to clipboard
+vim.keymap.set("n", "<leader>cp", function()
+  local p = vim.fn.expand("%")
+  vim.fn.setreg("+", p)
+  vim.notify("Copied path: " .. p)
+end, { desc = "Copy Relative Path" })

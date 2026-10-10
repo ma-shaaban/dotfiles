@@ -1,0 +1,72 @@
+# ~/.zshrc — managed by ~/dotfiles (symlink). Machine-specific bits go in
+# ~/.zshrc.local, which is sourced at the end and never committed.
+
+# ── Homebrew (macOS) ─────────────────────────────────────────────────────────
+[[ -x /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# ── PATH ────────────────────────────────────────────────────────────────────
+export PATH="$HOME/.local/bin:$PATH"
+[[ -d $HOME/.local/opt/node/bin ]] && export PATH="$HOME/.local/opt/node/bin:$PATH"
+
+# ── oh-my-zsh ──────────────────────────────────────────────────────────────
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME=""  # Prompt handled by Starship
+
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting web-search)
+source "$ZSH/oh-my-zsh.sh"
+
+# ── Starship prompt ─────────────────────────────────────────────────────────
+eval "$(starship init zsh)"
+
+# ── Editor ──────────────────────────────────────────────────────────────────
+export EDITOR=nvim
+export VISUAL=nvim
+
+# ── SSH agent ───────────────────────────────────────────────────────────────
+# Each fresh SSH login replaces SSH_AUTH_SOCK with a per-connection path.
+# Long-lived tmux/nvim processes resolve through a stable symlink instead.
+if [[ -S $SSH_AUTH_SOCK && $SSH_AUTH_SOCK != $HOME/.ssh/agent_sock ]]; then
+  ln -sfn $SSH_AUTH_SOCK $HOME/.ssh/agent_sock
+fi
+[[ -L $HOME/.ssh/agent_sock ]] && export SSH_AUTH_SOCK=$HOME/.ssh/agent_sock
+# No reachable agent (no forwarding, no launchd): use the one ssh-unlock starts.
+ssh-add -l >/dev/null 2>&1
+(( $? == 2 )) && export SSH_AUTH_SOCK=$HOME/.ssh/agent.local.sock
+# Load SSH keys from Bitwarden into the agent (private keys stay in memory).
+alias ssh-unlock="$HOME/dotfiles/scripts/ssh-unlock.sh"
+
+# ── Git ─────────────────────────────────────────────────────────────────────
+alias g="git"
+alias gs="git status"
+alias ga="git add"
+alias gc="git commit"
+alias gp="git push"
+alias gl="git log --oneline --graph --decorate"
+alias gd="git diff"
+alias gb="git branch --show-current"
+
+# ── Docker / Kubernetes / Terraform ─────────────────────────────────────────
+alias k="kubectl"
+alias kd="kubectl describe"
+alias kp="kubectl get pods"
+alias ks="kubectl get svc"
+alias t="terraform"
+alias h="helm"
+alias d="docker"
+
+# ── Quality-of-life ──────────────────────────────────────────────────────────
+alias ll="ls -lah --color=auto"
+alias la="ls -A --color=auto"
+alias ..="cd .."
+alias ...="cd ../.."
+alias vi="nvim"
+alias vim="nvim"
+
+# zoxide — smarter cd ('z dirname' jumps to most-used match)
+eval "$(zoxide init zsh)"
+
+# fuzzy Ctrl-R history / Ctrl-T files / Alt-C cd
+command -v fzf >/dev/null && source <(fzf --zsh)
+
+# ── Machine-specific overrides ──────────────────────────────────────────────
+[[ -f $HOME/.zshrc.local ]] && source "$HOME/.zshrc.local"
