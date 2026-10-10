@@ -63,11 +63,15 @@ if [[ -f $IDENTITIES ]]; then
   while IFS='|' read -r _ _ _ auth sign; do names+=("$auth" "$sign"); done < <(read_identities)
 fi
 names+=("$@")
-mapfile -t names < <(printf '%s\n' "${names[@]}" | awk 'NF && !seen[$0]++')
-[[ ${#names[@]} -gt 0 ]] || die "no keys to load"
+# Dedupe (bash 3.2 on macOS: no mapfile, and empty arrays trip `set -u`).
+unique=()
+for n in ${names[@]+"${names[@]}"}; do
+  [[ " ${unique[*]-} " == *" $n "* ]] || unique+=("$n")
+done
+[[ ${#unique[@]} -gt 0 ]] || die "no keys to load"
 
 items="$(bw list items | jq -c '[.[] | select(.type == 5)]')"
-for name in "${names[@]}"; do
+for name in "${unique[@]}"; do
   item="$(jq -c --arg n "$name" 'map(select(.name == $n)) | first' <<<"$items")"
   if [[ $item == null ]]; then warn "no Bitwarden SSH key item named '$name'"; continue; fi
   priv="$(jq -r .sshKey.privateKey <<<"$item")"

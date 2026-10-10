@@ -1,18 +1,15 @@
 # ~/.gitconfig — managed by ~/dotfiles (symlink).
 # Identities (name/email/keys/signing) are per directory: scripts/git-identities.sh
 # generates ~/<dir>/.gitconfig and the includeIf lines in ~/.gitconfig.local
-# from git/identities.conf.
+# from ~/.config/dotfiles/identities.conf.
 
 [gpg]
 	format = ssh
 [gpg "ssh"]
 	allowedSignersFile = ~/.ssh/allowed_signers
-[credential "https://github.com"]
-	helper =
-	helper = !gh auth git-credential
-[credential "https://gist.github.com"]
-	helper =
-	helper = !gh auth git-credential
+# Clone over HTTPS or SSH, always push over SSH (keys from ssh-unlock).
+[url "git@github.com:"]
+	pushInsteadOf = https://github.com/
 
 # Machine-specific and generated settings (not committed). Keep last.
 [include]

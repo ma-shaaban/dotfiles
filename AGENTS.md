@@ -13,10 +13,14 @@ ssh-unlock                            # interactive: Bitwarden unlock, keys -> s
 ~/dotfiles/scripts/git-identities.sh  # per-dir git identities + allowed_signers
 ```
 
+- **Steps only the user can do** (an agent can't type passwords). Ask them to run these with the `!` prefix:
+  - macOS, before `install.sh`: `! sudo -v` (Homebrew's installer needs sudo) — or have them run `! ~/dotfiles/install.sh` directly.
+  - `! ~/dotfiles/scripts/ssh-unlock.sh`: Bitwarden login/unlock (email, master password, 2FA).
 - `install.sh` is idempotent: it skips installed tools and backs up replaced files to `~/.dotfiles-backup/<ts>/`.
-- `ssh-unlock` needs the user's Bitwarden password: tell them to run `! ~/dotfiles/scripts/ssh-unlock.sh` (or export `BW_SESSION` first); don't automate the login. Keys expire from the agent after `SSH_KEY_TTL` (12h); re-run it daily.
+- Never ask the user to paste a Bitwarden session key or password into the chat.
+- SSH keys expire from the agent after `SSH_KEY_TTL` (12h); the user re-runs `ssh-unlock` daily.
 - On Linux, `DOTFILES_SKIP_OPS=1` skips kubectl/helm/k9s/terraform.
-- After install on macOS: `colima start` once for Docker; open the Bitwarden app and log in.
+- After install on macOS: `colima start` once for Docker.
 - Verify: `nvim --headless "+checkhealth lazyvim" +qa`, `tmux new -d && tmux kill-server`, `zsh -ic exit`.
 
 ## Layout
@@ -27,7 +31,7 @@ ssh-unlock                            # interactive: Bitwarden unlock, keys -> s
 | `tmux/tmux.conf` | `~/.config/tmux/tmux.conf` | prefix `C-a`, catppuccin plugin cloned by `scripts/shell.sh`. Sources `~/.config/tmux/local.conf` |
 | `nvim/` | `~/.config/nvim` | LazyVim. Plugin versions pinned in `lazy-lock.json` |
 | `starship/starship.toml` | `~/.config/starship.toml` | |
-| `git/gitconfig` | `~/.gitconfig` | Includes `~/.gitconfig.local` (generated + machine-specific) |
+| `git/gitconfig` | `~/.gitconfig` | SSH signing; GitHub pushes always go over SSH (`pushInsteadOf`). Includes `~/.gitconfig.local` |
 | `git/identities.example.conf` | — | Format of the real `~/.config/dotfiles/identities.conf` (local only; fetched from Bitwarden note `dotfiles-identities`) |
 | `wezterm/wezterm.lua` | `~/.config/wezterm/wezterm.lua` | macOS only. Loads `~/.config/wezterm/local.lua` (ssh_domains etc.) |
 | `Brewfile` | — | macOS packages |
