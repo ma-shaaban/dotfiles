@@ -7,9 +7,15 @@
 	format = ssh
 [gpg "ssh"]
 	allowedSignersFile = ~/.ssh/allowed_signers
-# Clone over HTTPS or SSH, always push over SSH (keys from ssh-unlock).
+# Clone over HTTPS or SSH, always push over SSH (keys from ssh-unlock), so
+# nothing depends on a forge's CLI or HTTPS tokens. Self-hosted forges: add
+# the same two lines for their host in ~/.gitconfig.local.
 [url "git@github.com:"]
 	pushInsteadOf = https://github.com/
+[url "git@gitlab.com:"]
+	pushInsteadOf = https://gitlab.com/
+[url "git@bitbucket.org:"]
+	pushInsteadOf = https://bitbucket.org/
 
 # Machine-specific and generated settings (not committed). Keep last.
 [include]

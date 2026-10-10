@@ -31,7 +31,7 @@ ssh-unlock                            # interactive: Bitwarden unlock, keys -> s
 | `tmux/tmux.conf` | `~/.config/tmux/tmux.conf` | prefix `C-a`, catppuccin plugin cloned by `scripts/shell.sh`. Sources `~/.config/tmux/local.conf` |
 | `nvim/` | `~/.config/nvim` | LazyVim. Plugin versions pinned in `lazy-lock.json` |
 | `starship/starship.toml` | `~/.config/starship.toml` | |
-| `git/gitconfig` | `~/.gitconfig` | SSH signing; GitHub pushes always go over SSH (`pushInsteadOf`). Includes `~/.gitconfig.local` |
+| `git/gitconfig` | `~/.gitconfig` | SSH signing; pushes to GitHub/GitLab/Bitbucket always go over SSH (`pushInsteadOf`). Includes `~/.gitconfig.local` |
 | `git/identities.example.conf` | — | Format of the real `~/.config/dotfiles/identities.conf` (local only; fetched from Bitwarden note `dotfiles-identities`) |
 | `wezterm/wezterm.lua` | `~/.config/wezterm/wezterm.lua` | macOS only. Loads `~/.config/wezterm/local.lua` (ssh_domains etc.) |
 | `Brewfile` | — | macOS packages |
@@ -41,6 +41,7 @@ ssh-unlock                            # interactive: Bitwarden unlock, keys -> s
 
 - **Public repo.** Never commit secrets, hostnames/IPs, or anything client/employer-specific (company names, work emails, key names, paths). Put them in the `*.local` files above or `~/.config/dotfiles/identities.conf`.
 - **SSH keys live in Bitwarden** as items of type *SSH key*. Private keys are never written to disk: `scripts/ssh-unlock.sh` pipes them into ssh-agent (reachable agent, else its own at `~/.ssh/agent.local.sock`) and writes only `~/.ssh/<item name>.pub`. It loads the keys named in `~/.config/dotfiles/identities.conf` (fetched from the Bitwarden secure note `dotfiles-identities` if missing); extra keys by name: `ssh-unlock <item name>`. Reference keys in ssh config/git as `~/.ssh/<name>` (ssh finds `<name>.pub` and uses the agent) and signing keys as `~/.ssh/<name>.pub`.
+- **Forge-agnostic git.** Auth and signing are plain SSH keys via ssh-agent; no `gh`/`glab` credential helpers or HTTPS tokens. Self-hosted forges get a `pushInsteadOf` line in `~/.gitconfig.local`.
 - **Theme**: Catppuccin Macchiato everywhere (WezTerm, tmux, nvim, starship).
 - **Keep it minimal.** The base is intentionally small; per-project tools get installed in that environment, not here.
 - **Ask the user before adding** these previously removed tools: yazi, glow (or other markdown viewers), lazygit, codeium/windsurf, copilot, ghostty, chafa.
