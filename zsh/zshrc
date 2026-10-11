@@ -1,4 +1,4 @@
-# ~/.zshrc — managed by ~/dotfiles (symlink). Machine-specific bits go in
+# ~/.zshrc — symlink into the dotfiles repo (any location). Machine-specific bits go in
 # ~/.zshrc.local, which is sourced at the end and never committed.
 
 # ── Homebrew (macOS) ─────────────────────────────────────────────────────────
@@ -33,8 +33,10 @@ fi
 ssh-add -l >/dev/null 2>&1
 (( $? == 2 )) && export SSH_AUTH_SOCK=$HOME/.ssh/agent.local.sock
 # Load SSH keys from Bitwarden into the agent (private keys stay in memory).
-alias ssh-unlock="$HOME/dotfiles/scripts/ssh-unlock.sh"
-alias ssh-lock="$HOME/dotfiles/scripts/ssh-lock.sh"
+# The repo can live anywhere: resolve it through the ~/.zshrc symlink.
+DOTFILES=${${(%):-%x}:A:h:h}
+alias ssh-unlock="$DOTFILES/scripts/ssh-unlock.sh"
+alias ssh-lock="$DOTFILES/scripts/ssh-lock.sh"
 
 # ── Git ─────────────────────────────────────────────────────────────────────
 alias g="git"

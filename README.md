@@ -5,8 +5,7 @@ zsh (oh-my-zsh + starship), tmux, LazyVim with in-editor markdown rendering, and
 
 ```sh
 git clone https://github.com/ma-shaaban/dotfiles ~/work/personal/dotfiles
-ln -s ~/work/personal/dotfiles ~/dotfiles
-~/dotfiles/install.sh
+~/work/personal/dotfiles/install.sh
 exec zsh
 ssh-unlock   # Bitwarden -> ssh-agent (never to disk), then per-dir git identities
 ```

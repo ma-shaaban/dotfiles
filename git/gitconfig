@@ -1,4 +1,4 @@
-# ~/.gitconfig — managed by ~/dotfiles (symlink).
+# ~/.gitconfig — symlink into the dotfiles repo.
 # Identities (name/email/keys/signing) are per directory: scripts/git-identities.sh
 # generates ~/<dir>/.gitconfig and the includeIf lines in ~/.gitconfig.local
 # from ~/.config/dotfiles/identities.conf.

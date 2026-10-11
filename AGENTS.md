@@ -7,16 +7,16 @@ Everything needed is already scripted; don't re-derive it. Read this file, then 
 
 ```sh
 git clone https://github.com/ma-shaaban/dotfiles ~/work/personal/dotfiles
-ln -s ~/work/personal/dotfiles ~/dotfiles   # scripts and links use ~/dotfiles
-~/dotfiles/install.sh                 # packages, symlinks, oh-my-zsh, tmux theme, nvim plugins
+~/work/personal/dotfiles/install.sh   # packages, symlinks, oh-my-zsh, tmux theme, nvim plugins
 exec zsh
 ssh-unlock                            # interactive: Bitwarden unlock, keys -> ssh-agent,
                                       # then git-identities.sh (per-dir identities + allowed_signers)
 ```
 
+- The repo works from any path (scripts use their own location; zshrc resolves it through the `~/.zshrc` symlink). `~/work/personal/dotfiles` is the convention on macOS so it picks up the personal git identity; dev containers may clone elsewhere. Re-run `install.sh --links-only` after moving it.
 - **Steps only the user can do** (an agent can't type passwords). Ask them to run these with the `!` prefix:
-  - macOS, before `install.sh`: `! sudo -v` (Homebrew's installer needs sudo) — or have them run `! ~/dotfiles/install.sh` directly.
-  - `! ~/dotfiles/scripts/ssh-unlock.sh`: Bitwarden login/unlock (email, master password, 2FA).
+  - macOS, before `install.sh`: `! sudo -v` (Homebrew's installer needs sudo) — or have them run `~/work/personal/dotfiles/install.sh` in their own terminal (the `!` prefix has no TTY for the sudo prompt).
+  - `ssh-unlock` in their own terminal: Bitwarden login/unlock (email, master password, 2FA).
 - `install.sh` is idempotent: it skips installed tools and backs up replaced files to `~/.dotfiles-backup/<ts>/`.
 - Never ask the user to paste a Bitwarden session key or password into the chat.
 - SSH keys expire from the agent after `SSH_KEY_TTL` (12h); the user re-runs `ssh-unlock` daily. `ssh-lock [name...]` removes keys from the agent early.

@@ -1,4 +1,4 @@
-# macOS packages: brew bundle --file ~/dotfiles/Brewfile
+# macOS packages: brew bundle --file Brewfile
 
 # Shell + editor
 brew "git"

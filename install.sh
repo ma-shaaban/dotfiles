@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Bootstrap this machine from ~/dotfiles. Idempotent: safe to re-run.
+# Bootstrap this machine from this repo (clone it anywhere). Idempotent: safe to re-run.
 #
 #   ./install.sh               packages + links + shell + nvim plugins
 #   ./install.sh --links-only  just (re)create the symlinks
