@@ -30,7 +30,7 @@ ssh-unlock                            # interactive: Bitwarden unlock, keys -> s
 | Repo path | Linked to | Notes |
 |---|---|---|
 | `zsh/zshrc` | `~/.zshrc` | oh-my-zsh + starship + zoxide + fzf. Sources `~/.zshrc.local` |
-| `tmux/tmux.conf` | `~/.config/tmux/tmux.conf` | prefix `C-a`, catppuccin plugin cloned by `scripts/shell.sh`. Sources `~/.config/tmux/local.conf` |
+| `tmux/tmux.conf` | `~/.config/tmux/tmux.conf` | prefix `C-a`, mouse on, catppuccin plugin cloned by `scripts/shell.sh`. Sources `~/.config/tmux/local.conf` |
 | `nvim/` | `~/.config/nvim` | LazyVim. Plugin versions pinned in `lazy-lock.json` |
 | `starship/starship.toml` | `~/.config/starship.toml` | |
 | `git/gitconfig` | `~/.gitconfig` | SSH signing; pushes to GitHub/GitLab/Bitbucket always go over SSH (`pushInsteadOf`). Includes `~/.gitconfig.local` |
