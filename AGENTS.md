@@ -36,6 +36,7 @@ ssh-unlock                            # interactive: Bitwarden unlock, keys -> s
 | `git/gitconfig` | `~/.gitconfig` | SSH signing; pushes to GitHub/GitLab/Bitbucket always go over SSH (`pushInsteadOf`). Includes `~/.gitconfig.local` |
 | `git/identities.example.conf` | — | Format of the real `~/.config/dotfiles/identities.conf` (local only; fetched from Bitwarden note `dotfiles-identities`) |
 | `wezterm/wezterm.lua` | `~/.config/wezterm/wezterm.lua` | macOS only. Loads `~/.config/wezterm/local.lua` (ssh_domains etc.) |
+| `claude/statusline.sh` | `~/.claude/statusline.sh` | Claude Code status line: model, context use, dir, git branch. `link.sh` merges the `statusLine` entry into `~/.claude/settings.json` (not linked; Claude Code writes to it) |
 | `Brewfile` | — | macOS packages |
 | `scripts/packages-linux.sh` | — | apt + upstream binaries into `~/.local/{bin,opt}` |
 

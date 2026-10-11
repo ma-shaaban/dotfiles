@@ -24,6 +24,17 @@ link nvim                    "$HOME/.config/nvim"
 link starship/starship.toml  "$HOME/.config/starship.toml"
 link git/gitconfig           "$HOME/.gitconfig"
 [[ $OS == macos ]] && link wezterm/wezterm.lua "$HOME/.config/wezterm/wezterm.lua"
+link claude/statusline.sh    "$HOME/.claude/statusline.sh"
+
+# Claude Code rewrites settings.json itself, so merge in the status line
+# instead of linking the whole file.
+claude_settings="$HOME/.claude/settings.json"
+[[ -s $claude_settings ]] || echo '{}' >"$claude_settings"
+if ! jq -e '.statusLine.command == "~/.claude/statusline.sh"' "$claude_settings" >/dev/null; then
+  tmp="$(mktemp)"
+  jq '.statusLine = {type: "command", command: "~/.claude/statusline.sh"}' "$claude_settings" >"$tmp" && mv "$tmp" "$claude_settings"
+  log "set statusLine in $claude_settings"
+fi
 
 # tmux reads ~/.tmux.conf before ~/.config/tmux/tmux.conf; move it aside.
 if [[ -e $HOME/.tmux.conf && ! -L $HOME/.tmux.conf ]]; then
