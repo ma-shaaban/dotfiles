@@ -12,6 +12,7 @@ brew "fd"
 brew "jq"
 brew "node"           # mason (prettier, markdown-toc)
 brew "bitwarden-cli"  # bw, used by scripts/ssh-unlock.sh
+brew "gh"             # GitHub API (repos, PRs); git itself still uses SSH
 
 # Ops
 brew "kubernetes-cli"

@@ -61,6 +61,14 @@ install_bw() {
   npm install -g --silent --prefix "$HOME/.local" @bitwarden/cli
 }
 
+install_gh() {
+  have gh && return
+  log "gh"
+  local tag tmp; tag="$(gh_latest_tag cli/cli)"
+  tmp="$(fetch_tgz "https://github.com/cli/cli/releases/download/$tag/gh_${tag#v}_linux_$ARCH_GO.tar.gz")"
+  mv "$tmp"/gh_*/bin/gh "$LOCAL_BIN/"
+}
+
 install_kubectl() {
   have kubectl && return
   log "kubectl"
@@ -98,6 +106,7 @@ install_starship
 install_mermaid_ascii
 install_node
 install_bw
+install_gh
 if [[ ${DOTFILES_SKIP_OPS:-0} != 1 ]]; then
   install_kubectl
   install_helm

@@ -23,6 +23,7 @@ ssh-unlock                            # interactive: Bitwarden unlock, keys -> s
 - Identities: `~/.config/dotfiles/identities.conf` is the source of truth. After editing it, run `scripts/git-identities.sh` (or `ssh-unlock`); identities removed since the last run are cleaned up (their `~/<dir>/.gitconfig`, `.pub` files, agent keys). `git-identities.sh --clean` removes all of them. The Bitwarden note is only read when the file is missing, so update it too.
 - On Linux, `DOTFILES_SKIP_OPS=1` skips kubectl/helm/k9s/terraform.
 - After install on macOS: `colima start` once for Docker.
+- `gh auth login -p ssh --skip-ssh-key` is interactive (browser login), so the user runs it in their own terminal. Add a second account the same way and switch with `gh auth switch`.
 - Verify: `nvim --headless "+checkhealth lazyvim" +qa`, `tmux new -d && tmux kill-server`, `zsh -ic exit`.
 
 ## Layout
@@ -44,7 +45,7 @@ ssh-unlock                            # interactive: Bitwarden unlock, keys -> s
 
 - **Public repo.** Never commit secrets, hostnames/IPs, or anything client/employer-specific (company names, work emails, key names, paths). Put them in the `*.local` files above or `~/.config/dotfiles/identities.conf`.
 - **SSH keys live in Bitwarden** as items of type *SSH key*. Private keys are never written to disk: `scripts/ssh-unlock.sh` pipes them into ssh-agent (reachable agent, else its own at `~/.ssh/agent.local.sock`) and writes only `~/.ssh/<item name>.pub`. It loads the keys named in `~/.config/dotfiles/identities.conf` (fetched from the Bitwarden secure note `dotfiles-identities` if missing); extra keys by name: `ssh-unlock <item name>`. Reference keys in ssh config/git as `~/.ssh/<name>.pub` (ssh then uses the matching agent key; the bare `~/.ssh/<name>` path does not exist, so ssh would offer nothing).
-- **Forge-agnostic git.** Auth and signing are plain SSH keys via ssh-agent; no `gh`/`glab` credential helpers or HTTPS tokens. Self-hosted forges get a `pushInsteadOf` line in `~/.gitconfig.local`.
+- **Forge-agnostic git.** Auth and signing are plain SSH keys via ssh-agent; no `gh`/`glab` credential helpers or HTTPS tokens. `gh` is installed for the GitHub API only (creating repos, PRs): log in with `gh auth login -p ssh --skip-ssh-key` and never run `gh auth setup-git`. Self-hosted forges get a `pushInsteadOf` line in `~/.gitconfig.local`.
 - **Theme**: Catppuccin Macchiato everywhere (WezTerm, tmux, nvim, starship).
 - **Keep it minimal.** The base is intentionally small; per-project tools get installed in that environment, not here.
 - **Ask the user before adding** these previously removed tools: yazi, glow (or other markdown viewers), lazygit, codeium/windsurf, copilot, ghostty, chafa.
