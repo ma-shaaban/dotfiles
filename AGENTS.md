@@ -6,7 +6,8 @@ Everything needed is already scripted; don't re-derive it. Read this file, then 
 ## Set up a machine
 
 ```sh
-git clone https://github.com/ma-shaaban/dotfiles ~/dotfiles
+git clone https://github.com/ma-shaaban/dotfiles ~/work/personal/dotfiles
+ln -s ~/work/personal/dotfiles ~/dotfiles   # scripts and links use ~/dotfiles
 ~/dotfiles/install.sh                 # packages, symlinks, oh-my-zsh, tmux theme, nvim plugins
 exec zsh
 ssh-unlock                            # interactive: Bitwarden unlock, keys -> ssh-agent,

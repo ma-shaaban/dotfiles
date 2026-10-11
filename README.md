@@ -4,7 +4,8 @@ My dev environment for macOS (WezTerm) and Ubuntu/Debian dev containers:
 zsh (oh-my-zsh + starship), tmux, LazyVim with in-editor markdown rendering, and git with per-directory SSH-signed identities. SSH keys are loaded from Bitwarden straight into ssh-agent.
 
 ```sh
-git clone https://github.com/ma-shaaban/dotfiles ~/dotfiles
+git clone https://github.com/ma-shaaban/dotfiles ~/work/personal/dotfiles
+ln -s ~/work/personal/dotfiles ~/dotfiles
 ~/dotfiles/install.sh
 exec zsh
 ssh-unlock   # Bitwarden -> ssh-agent (never to disk), then per-dir git identities
