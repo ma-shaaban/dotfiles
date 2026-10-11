@@ -82,3 +82,8 @@ for name in "${unique[@]}"; do
   ssh-add -q -t "$TTL" - <<<"$priv" && log "loaded $name for $TTL"
 done
 unset priv
+
+# Keys and their .pub files are in place: (re)apply the git identities.
+if [[ -f $IDENTITIES ]]; then
+  bash "$DOTFILES/scripts/git-identities.sh"
+fi

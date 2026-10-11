@@ -7,7 +7,7 @@ zsh (oh-my-zsh + starship), tmux, LazyVim with in-editor markdown rendering, and
 git clone https://github.com/ma-shaaban/dotfiles ~/dotfiles
 ~/dotfiles/install.sh
 exec zsh
-ssh-unlock && ~/dotfiles/scripts/git-identities.sh   # Bitwarden -> ssh-agent, never to disk
+ssh-unlock   # Bitwarden -> ssh-agent (never to disk), then per-dir git identities
 ```
 
 Details, layout and conventions are in [AGENTS.md](AGENTS.md), written so an AI agent can set up a new machine from it.

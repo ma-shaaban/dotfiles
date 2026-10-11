@@ -9,8 +9,8 @@ Everything needed is already scripted; don't re-derive it. Read this file, then 
 git clone https://github.com/ma-shaaban/dotfiles ~/dotfiles
 ~/dotfiles/install.sh                 # packages, symlinks, oh-my-zsh, tmux theme, nvim plugins
 exec zsh
-ssh-unlock                            # interactive: Bitwarden unlock, keys -> ssh-agent
-~/dotfiles/scripts/git-identities.sh  # per-dir git identities + allowed_signers
+ssh-unlock                            # interactive: Bitwarden unlock, keys -> ssh-agent,
+                                      # then git-identities.sh (per-dir identities + allowed_signers)
 ```
 
 - **Steps only the user can do** (an agent can't type passwords). Ask them to run these with the `!` prefix:
@@ -18,7 +18,8 @@ ssh-unlock                            # interactive: Bitwarden unlock, keys -> s
   - `! ~/dotfiles/scripts/ssh-unlock.sh`: Bitwarden login/unlock (email, master password, 2FA).
 - `install.sh` is idempotent: it skips installed tools and backs up replaced files to `~/.dotfiles-backup/<ts>/`.
 - Never ask the user to paste a Bitwarden session key or password into the chat.
-- SSH keys expire from the agent after `SSH_KEY_TTL` (12h); the user re-runs `ssh-unlock` daily.
+- SSH keys expire from the agent after `SSH_KEY_TTL` (12h); the user re-runs `ssh-unlock` daily. `ssh-lock [name...]` removes keys from the agent early.
+- Identities: `~/.config/dotfiles/identities.conf` is the source of truth. After editing it, run `scripts/git-identities.sh` (or `ssh-unlock`); identities removed since the last run are cleaned up (their `~/<dir>/.gitconfig`, `.pub` files, agent keys). `git-identities.sh --clean` removes all of them. The Bitwarden note is only read when the file is missing, so update it too.
 - On Linux, `DOTFILES_SKIP_OPS=1` skips kubectl/helm/k9s/terraform.
 - After install on macOS: `colima start` once for Docker.
 - Verify: `nvim --headless "+checkhealth lazyvim" +qa`, `tmux new -d && tmux kill-server`, `zsh -ic exit`.
