@@ -67,7 +67,7 @@ while IFS='|' read -r dir name email auth sign; do
 	email = $email
 	signingkey = $HOME/.ssh/$sign.pub
 [core]
-	sshCommand = ssh -i ~/.ssh/$auth -o IdentitiesOnly=yes
+	sshCommand = ssh -i ~/.ssh/$auth.pub -o IdentitiesOnly=yes
 [commit]
 	gpgsign = true
 [tag]
