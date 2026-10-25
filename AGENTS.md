@@ -18,6 +18,7 @@ ssh-unlock                            # interactive: Bitwarden unlock, keys -> s
   - macOS, before `install.sh`: `! sudo -v` (Homebrew's installer needs sudo) — or have them run `~/work/personal/dotfiles/install.sh` in their own terminal (the `!` prefix has no TTY for the sudo prompt).
   - `ssh-unlock` in their own terminal: Bitwarden login/unlock (email, master password, 2FA).
 - `install.sh` is idempotent: it skips installed tools and backs up replaced files to `~/.dotfiles-backup/<ts>/`.
+- `scripts/update.sh` (alias `update`) upgrades everything install.sh set up: brew/apt, the `~/.local` downloads, oh-my-zsh + plugins, the tmux theme, nvim plugins (`Lazy sync`) and Mason tools. It re-runs the install scripts with `DOTFILES_UPGRADE=1` (`present`/`upgrading` in `lib.sh`), so a new tool gets an upgrade path by using `present <cmd> && return`. Commit `nvim/lazy-lock.json` afterwards if it changed.
 - Never ask the user to paste a Bitwarden session key or password into the chat.
 - SSH keys expire from the agent after `SSH_KEY_TTL` (12h); the user re-runs `ssh-unlock` daily. `ssh-lock [name...]` removes keys from the agent early.
 - Identities: `~/.config/dotfiles/identities.conf` is the source of truth. After editing it, run `scripts/git-identities.sh` (or `ssh-unlock`); identities removed since the last run are cleaned up (their `~/<dir>/.gitconfig`, `.pub` files, agent keys). `git-identities.sh --clean` removes all of them. The Bitwarden note is only read when the file is missing, so update it too.
@@ -50,5 +51,5 @@ ssh-unlock                            # interactive: Bitwarden unlock, keys -> s
 - **Keep it minimal.** The base is intentionally small; per-project tools get installed in that environment, not here.
 - **Ask the user before adding** these previously removed tools: yazi, glow (or other markdown viewers), lazygit, codeium/windsurf, copilot, ghostty, chafa.
 - nvim markdown rendering is `nvim/lua/plugins/markdown.lua` (render-markdown.nvim + `<leader>mm` mermaid preview via `mermaid-ascii`). It patches a private render-markdown API; recheck after plugin updates.
-- Adding a tool: add it to both `Brewfile` and `scripts/packages-linux.sh` (skip-if-present function), add any config dir + a `link` line in `scripts/link.sh`, and update the table above.
+- Adding a tool: add it to both `Brewfile` and `scripts/packages-linux.sh` (skip-if-present function using `present`), add any config dir + a `link` line in `scripts/link.sh`, and update the table above.
 - After `:Lazy update` in nvim, commit `nvim/lazy-lock.json`.

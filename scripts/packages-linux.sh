@@ -14,7 +14,7 @@ have fd || ln -sf "$(command -v fdfind)" "$LOCAL_BIN/fd"
 
 install_nvim() {
   # LazyVim needs a recent nvim; apt's is too old.
-  if have nvim && nvim --headless -c 'if has("nvim-0.11") | qa | else | cq | endif' 2>/dev/null; then return; fi
+  if ! upgrading && have nvim && nvim --headless -c 'if has("nvim-0.11") | qa | else | cq | endif' 2>/dev/null; then return; fi
   log "neovim"
   local tmp; tmp="$(fetch_tgz "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-$ARCH.tar.gz")"
   rm -rf "$LOCAL_OPT/nvim" && mv "$tmp"/nvim-linux-* "$LOCAL_OPT/nvim"
@@ -23,7 +23,7 @@ install_nvim() {
 
 install_fzf() {
   # fzf --zsh needs >= 0.48; apt's is older.
-  if have fzf && fzf --zsh >/dev/null 2>&1; then return; fi
+  if ! upgrading && have fzf && fzf --zsh >/dev/null 2>&1; then return; fi
   log "fzf"
   local tag tmp; tag="$(gh_latest_tag junegunn/fzf)"
   tmp="$(fetch_tgz "https://github.com/junegunn/fzf/releases/download/$tag/fzf-${tag#v}-linux_$ARCH_GO.tar.gz")"
@@ -31,13 +31,13 @@ install_fzf() {
 }
 
 install_starship() {
-  have starship && return
+  present starship && return
   log "starship"
   curl -fsSL https://starship.rs/install.sh | sh -s -- -y -b "$LOCAL_BIN" >/dev/null
 }
 
 install_mermaid_ascii() {
-  have mermaid-ascii && return
+  present mermaid-ascii && return
   log "mermaid-ascii"
   local tmp; tmp="$(fetch_tgz "https://github.com/AlexanderGrooff/mermaid-ascii/releases/latest/download/mermaid-ascii_Linux_$ARCH.tar.gz")"
   mv "$tmp/mermaid-ascii" "$LOCAL_BIN/"
@@ -45,7 +45,7 @@ install_mermaid_ascii() {
 
 install_node() {
   # Needed by mason (prettier, markdown-toc) and the Bitwarden CLI.
-  have node && return
+  present node && return
   log "node (LTS)"
   local ver tmp
   ver="$(curl -fsSL https://nodejs.org/dist/index.json | jq -r '[.[] | select(.lts)][0].version')"
@@ -56,13 +56,13 @@ install_node() {
 }
 
 install_bw() {
-  have bw && return
+  present bw && return
   log "bitwarden cli"
   npm install -g --silent --prefix "$HOME/.local" @bitwarden/cli
 }
 
 install_gh() {
-  have gh && return
+  present gh && return
   log "gh"
   local tag tmp; tag="$(gh_latest_tag cli/cli)"
   tmp="$(fetch_tgz "https://github.com/cli/cli/releases/download/$tag/gh_${tag#v}_linux_$ARCH_GO.tar.gz")"
@@ -70,28 +70,28 @@ install_gh() {
 }
 
 install_kubectl() {
-  have kubectl && return
+  present kubectl && return
   log "kubectl"
   curl -fsSLo "$LOCAL_BIN/kubectl" "https://dl.k8s.io/release/$(curl -fsSL https://dl.k8s.io/release/stable.txt)/bin/linux/$ARCH_GO/kubectl"
   chmod +x "$LOCAL_BIN/kubectl"
 }
 
 install_helm() {
-  have helm && return
+  present helm && return
   log "helm"
   local tmp; tmp="$(fetch_tgz "https://get.helm.sh/helm-$(gh_latest_tag helm/helm)-linux-$ARCH_GO.tar.gz")"
   mv "$tmp/linux-$ARCH_GO/helm" "$LOCAL_BIN/"
 }
 
 install_k9s() {
-  have k9s && return
+  present k9s && return
   log "k9s"
   local tmp; tmp="$(fetch_tgz "https://github.com/derailed/k9s/releases/latest/download/k9s_Linux_$ARCH_GO.tar.gz")"
   mv "$tmp/k9s" "$LOCAL_BIN/"
 }
 
 install_terraform() {
-  have terraform && return
+  present terraform && return
   log "terraform"
   local ver tmp
   ver="$(curl -fsSL https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r .current_version)"

@@ -2,7 +2,23 @@
 # oh-my-zsh + plugins, tmux theme, login shell. Same on macOS and Linux.
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 
-clone() { [[ -d $2 ]] || { log "clone $1"; git clone -q --depth 1 ${3:+--branch "$3"} "https://github.com/$1" "$2"; }; }
+# clone <repo> <dir> [tag]: shallow clone if missing; when upgrading, pull
+# (or move to the given tag) instead.
+clone() {
+  local repo=$1 dir=$2 tag=${3:-}
+  if [[ ! -d $dir ]]; then
+    log "clone $repo"
+    git clone -q --depth 1 ${tag:+--branch "$tag"} "https://github.com/$repo" "$dir"
+  elif upgrading; then
+    log "update $repo"
+    if [[ -n $tag ]]; then
+      git -C "$dir" fetch -q --depth 1 origin tag "$tag"
+      git -C "$dir" -c advice.detachedHead=false checkout -q "$tag"
+    else
+      git -C "$dir" pull -q --ff-only
+    fi
+  fi
+}
 
 clone ohmyzsh/ohmyzsh                  "$HOME/.oh-my-zsh"
 ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"

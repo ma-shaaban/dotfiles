@@ -10,6 +10,10 @@ log()  { printf '\033[1;34m==>\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33m!!\033[0m %s\n' "$*" >&2; }
 die()  { printf '\033[1;31mxx\033[0m %s\n' "$*" >&2; exit 1; }
 have() { command -v "$1" >/dev/null 2>&1; }
+# install.sh skips tools that are already there; update.sh sets
+# DOTFILES_UPGRADE=1 so the same code fetches the latest release again.
+upgrading() { [[ ${DOTFILES_UPGRADE:-0} == 1 ]]; }
+present() { have "$1" && ! upgrading; }
 
 case "$(uname -s)" in
   Darwin) OS=macos ;;

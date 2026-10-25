@@ -15,7 +15,7 @@ log "brew bundle"
 brew bundle --file "$DOTFILES/Brewfile"
 
 # Not in Homebrew core.
-if ! have mermaid-ascii; then
+if ! present mermaid-ascii; then
   log "mermaid-ascii"
   tmp="$(fetch_tgz "https://github.com/AlexanderGrooff/mermaid-ascii/releases/latest/download/mermaid-ascii_Darwin_$ARCH.tar.gz")"
   mv "$tmp/mermaid-ascii" "$LOCAL_BIN/"

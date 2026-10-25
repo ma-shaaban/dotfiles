@@ -37,6 +37,8 @@ ssh-add -l >/dev/null 2>&1
 DOTFILES=${${(%):-%x}:A:h:h}
 alias ssh-unlock="$DOTFILES/scripts/ssh-unlock.sh"
 alias ssh-lock="$DOTFILES/scripts/ssh-lock.sh"
+# Update packages, shell plugins, nvim plugins and Mason tools.
+alias update="$DOTFILES/scripts/update.sh"
 
 # ── Git ─────────────────────────────────────────────────────────────────────
 alias g="git"
