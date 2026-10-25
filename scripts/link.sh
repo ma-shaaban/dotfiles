@@ -36,6 +36,21 @@ if ! jq -e '.statusLine.command == "~/.claude/statusline.sh"' "$claude_settings"
   log "set statusLine in $claude_settings"
 fi
 
+# Homebrew's docker-compose is a CLI plugin outside Docker's default search
+# path. Merge it into ~/.docker/config.json (not linked: docker login writes
+# credentials there).
+if [[ $OS == macos ]]; then
+  docker_cfg="$HOME/.docker/config.json"
+  plugins=/opt/homebrew/lib/docker/cli-plugins
+  mkdir -p "$(dirname "$docker_cfg")"
+  [[ -s $docker_cfg ]] || echo '{}' >"$docker_cfg"
+  if ! jq -e --arg d "$plugins" '(.cliPluginsExtraDirs // []) | index($d)' "$docker_cfg" >/dev/null; then
+    tmp="$(mktemp)"
+    jq --arg d "$plugins" '.cliPluginsExtraDirs = ((.cliPluginsExtraDirs // []) + [$d])' "$docker_cfg" >"$tmp" && mv "$tmp" "$docker_cfg"
+    log "added $plugins to $docker_cfg"
+  fi
+fi
+
 # tmux reads ~/.tmux.conf before ~/.config/tmux/tmux.conf; move it aside.
 if [[ -e $HOME/.tmux.conf && ! -L $HOME/.tmux.conf ]]; then
   mkdir -p "$BACKUP" && mv "$HOME/.tmux.conf" "$BACKUP/"

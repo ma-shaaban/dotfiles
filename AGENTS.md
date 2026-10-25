@@ -23,7 +23,7 @@ ssh-unlock                            # interactive: Bitwarden unlock, keys -> s
 - SSH keys expire from the agent after `SSH_KEY_TTL` (12h); the user re-runs `ssh-unlock` daily. `ssh-lock [name...]` removes keys from the agent early.
 - Identities: `~/.config/dotfiles/identities.conf` is the source of truth. After editing it, run `scripts/git-identities.sh` (or `ssh-unlock`); identities removed since the last run are cleaned up (their `~/<dir>/.gitconfig`, `.pub` files, agent keys). `git-identities.sh --clean` removes all of them. The Bitwarden note is only read when the file is missing, so update it too.
 - On Linux, `DOTFILES_SKIP_OPS=1` skips kubectl/helm/k9s/terraform.
-- After install on macOS: `colima start` once for Docker.
+- After install on macOS: `colima start` once for Docker. `link.sh` registers Homebrew's compose plugin in `~/.docker/config.json` so `docker compose` works.
 - `gh auth login -p ssh --skip-ssh-key` is interactive (browser login), so the user runs it in their own terminal. Add a second account the same way and switch with `gh auth switch`.
 - Verify: `nvim --headless "+checkhealth lazyvim" +qa`, `tmux new -d && tmux kill-server`, `zsh -ic exit`.
 
