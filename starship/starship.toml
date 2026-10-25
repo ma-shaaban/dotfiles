@@ -1,6 +1,7 @@
 add_newline = false
-# A minimal left prompt
-format = """$directory$character"""
+# A minimal left prompt; the cursor goes on its own line so long paths
+# don't push it to the right.
+format = """$directory$line_break$character"""
 palette = "catppuccin_macchiato"
 # move the rest of the prompt to the right
 right_format = """$all"""
