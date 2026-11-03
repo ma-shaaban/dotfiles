@@ -66,6 +66,7 @@ names+=("$@")
 # Dedupe (bash 3.2 on macOS: no mapfile, and empty arrays trip `set -u`).
 unique=()
 for n in ${names[@]+"${names[@]}"}; do
+  [[ $n == - ]] && continue   # "-" = no signing key
   [[ " ${unique[*]-} " == *" $n "* ]] || unique+=("$n")
 done
 [[ ${#unique[@]} -gt 0 ]] || die "no keys to load"
