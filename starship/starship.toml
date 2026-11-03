@@ -1,10 +1,8 @@
 add_newline = false
-# A minimal left prompt; the cursor goes on its own line so long paths
-# don't push it to the right.
-format = """$directory$line_break$character"""
+# Line 1: directory, then everything else (git, aws, languages...).
+# Line 2: just the cursor, so long paths and profiles don't push it right.
+format = """$directory$all$line_break$character"""
 palette = "catppuccin_macchiato"
-# move the rest of the prompt to the right
-right_format = """$all"""
 command_timeout = 1000
 
 [character]
@@ -12,10 +10,10 @@ vicmd_symbol = "[N] >>>"
 success_symbol = '[➜](bold green)'
 
 [git_branch]
-format = '[$symbol$branch(:$remote_branch)]($style)'
+format = '[$symbol$branch(:$remote_branch)]($style) '
 
 [aws]
-format = '[$symbol(profile: "$profile" )(\(region: $region\) )]($style)'
+format = '[$symbol($profile )(\($region\) )]($style)'
 disabled = false
 style = 'bold blue'
 symbol = " "
