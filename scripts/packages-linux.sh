@@ -69,6 +69,15 @@ install_gh() {
   mv "$tmp"/gh_*/bin/gh "$LOCAL_BIN/"
 }
 
+install_aws() {
+  present aws && return
+  log "aws cli"
+  local tmp; tmp="$(mktemp -d)"
+  curl -fsSLo "$tmp/aws.zip" "https://awscli.amazonaws.com/awscli-exe-linux-${ARCH/arm64/aarch64}.zip"
+  unzip -q "$tmp/aws.zip" -d "$tmp"
+  "$tmp/aws/install" -i "$LOCAL_OPT/aws-cli" -b "$LOCAL_BIN" --update >/dev/null
+}
+
 install_kubectl() {
   present kubectl && return
   log "kubectl"
@@ -108,6 +117,7 @@ install_node
 install_bw
 install_gh
 if [[ ${DOTFILES_SKIP_OPS:-0} != 1 ]]; then
+  install_aws
   install_kubectl
   install_helm
   install_k9s

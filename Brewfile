@@ -15,6 +15,7 @@ brew "bitwarden-cli"  # bw, used by scripts/ssh-unlock.sh
 brew "gh"             # GitHub API (repos, PRs); git itself still uses SSH
 
 # Ops
+brew "awscli"         # AWS CLI v2
 brew "kubernetes-cli"
 brew "helm"
 brew "k9s"
