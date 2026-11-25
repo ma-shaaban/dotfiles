@@ -70,9 +70,6 @@ alias vim="nvim"
 # until Ctrl-C. A closed lid on battery still sleeps.
 [[ "$OSTYPE" == darwin* ]] && alias awake="caffeinate -i"
 
-# ── Quality-of-life ──────────────────────────────────────────────────────────
-alias claude-ba='CLAUDE_CONFIG_DIR=$HOME/.claude-ba claude'
-
 # zoxide — smarter cd ('z dirname' jumps to most-used match)
 eval "$(zoxide init zsh)"
 
