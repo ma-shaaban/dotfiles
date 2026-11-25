@@ -66,6 +66,12 @@ alias ..="cd .."
 alias ...="cd ../.."
 alias vi="nvim"
 alias vim="nvim"
+# Keep the Mac from idle-sleeping: 'awake claude' while it runs, or bare 'awake'
+# until Ctrl-C. A closed lid on battery still sleeps.
+[[ "$OSTYPE" == darwin* ]] && alias awake="caffeinate -i"
+
+# ── Quality-of-life ──────────────────────────────────────────────────────────
+alias claude-ba='CLAUDE_CONFIG_DIR=$HOME/.claude-ba claude'
 
 # zoxide — smarter cd ('z dirname' jumps to most-used match)
 eval "$(zoxide init zsh)"
