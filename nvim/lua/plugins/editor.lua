@@ -15,8 +15,10 @@ return {
             args = { "--hidden", "--glob=!.git/" },
           },
           -- Same for file picker (<leader>ff) so hidden files are findable too.
+          -- Not raw args: it runs fd (rejects rg's --glob=!x) and snacks
+          -- already excludes .git for fd/rg/find.
           files = {
-            args = { "--hidden", "--glob=!.git/" },
+            hidden = true,
           },
         },
       },
