@@ -11,6 +11,7 @@ brew "ripgrep"
 brew "fd"
 brew "jq"
 brew "node"           # mason (prettier, markdown-toc)
+brew "go"             # mason builds gopls/goimports/gofumpt with it
 brew "bitwarden-cli"  # bw, used by scripts/ssh-unlock.sh
 brew "gh"             # GitHub API (repos, PRs); git itself still uses SSH
 

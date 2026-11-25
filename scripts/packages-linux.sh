@@ -55,6 +55,16 @@ install_node() {
   export PATH="$LOCAL_OPT/node/bin:$PATH"
 }
 
+install_go() {
+  # The nvim Go extra's Mason tools (gopls, goimports, gofumpt) build with go.
+  present go && return
+  log "go"
+  local ver; ver="$(curl -fsSL 'https://go.dev/dl/?mode=json' | jq -r '.[0].version')"
+  rm -rf "$LOCAL_OPT/go"
+  curl -fsSL "https://go.dev/dl/$ver.linux-$ARCH_GO.tar.gz" | tar -xz -C "$LOCAL_OPT"
+  ln -sf "$LOCAL_OPT/go/bin/go" "$LOCAL_OPT/go/bin/gofmt" "$LOCAL_BIN/"
+}
+
 install_bw() {
   present bw && return
   log "bitwarden cli"
@@ -114,6 +124,7 @@ install_fzf
 install_starship
 install_mermaid_ascii
 install_node
+install_go
 install_bw
 install_gh
 if [[ ${DOTFILES_SKIP_OPS:-0} != 1 ]]; then
